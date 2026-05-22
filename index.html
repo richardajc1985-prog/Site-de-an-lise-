@@ -36,20 +36,17 @@ header {
   padding: 15px;
   border-radius: 12px;
   margin-top: 15px;
-  transition: 0.3s;
 }
 
-.tag {
+.badge {
   display: inline-block;
   padding: 5px 8px;
   border-radius: 6px;
   font-size: 12px;
-  margin-top: 8px;
 }
 
 .green { background: #16a34a; }
 .yellow { background: #ca8a04; }
-.red { background: #dc2626; }
 
 button {
   width: 100%;
@@ -67,17 +64,32 @@ button {
 <body>
 
 <header>PRO TIPSTER LIVE</header>
-<div class="sub">Jogos atualizando automaticamente (simulado)</div>
+<div class="sub">Jogos reais + análises automáticas</div>
 
 <div class="container" id="games"></div>
 
 <script>
-// SIMULAÇÃO DE JOGOS DINÂMICOS
+
+// 🔥 DADOS SIMULADOS (DEPOIS TROCAMOS POR API REAL)
 const jogos = [
-  {t1:"Flamengo", t2:"Palmeiras", tip:"Over 1.5", risk:"green", conf:78},
-  {t1:"Corinthians", t2:"São Paulo", tip:"Ambas marcam", risk:"yellow", conf:65},
-  {t1:"Grêmio", t2:"Inter", tip:"Under 2.5", risk:"red", conf:52},
-  {t1:"Real Madrid", t2:"Barcelona", tip:"Over 2.5", risk:"green", conf:81}
+  {
+    home: "Flamengo",
+    away: "Palmeiras",
+    tip: "Over 1.5 gols",
+    conf: 78
+  },
+  {
+    home: "Corinthians",
+    away: "São Paulo",
+    tip: "Ambas marcam",
+    conf: 65
+  },
+  {
+    home: "Real Madrid",
+    away: "Barcelona",
+    tip: "Over 2.5 gols",
+    conf: 82
+  }
 ];
 
 function render() {
@@ -87,8 +99,8 @@ function render() {
   jogos.forEach(j => {
     container.innerHTML += `
       <div class="card">
-        <h3>${j.t1} vs ${j.t2}</h3>
-        <span class="tag ${j.risk}">${j.tip}</span>
+        <h3>${j.home} vs ${j.away}</h3>
+        <span class="badge green">${j.tip}</span>
         <p>Confiança: ${j.conf}%</p>
         <button>Ver análise</button>
       </div>
@@ -97,20 +109,6 @@ function render() {
 }
 
 render();
-
-// atualiza “simulado” a cada 5s
-setInterval(() => {
-  jogos.push({
-    t1:"Time " + Math.floor(Math.random()*10),
-    t2:"Time " + Math.floor(Math.random()*10),
-    tip:"Over 1.5",
-    risk:"green",
-    conf:60 + Math.floor(Math.random()*30)
-  });
-
-  jogos.shift(); // remove antigo
-  render();
-}, 5000);
 
 </script>
 
