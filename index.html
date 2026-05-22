@@ -1,9 +1,8 @@
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Pro Tipster Dashboard</title>
+<title>Pro Tipster Live</title>
 
 <style>
 body {
@@ -13,7 +12,6 @@ body {
   color: white;
 }
 
-/* HEADER */
 header {
   background: #0f172a;
   padding: 20px;
@@ -25,46 +23,25 @@ header {
 .sub {
   text-align: center;
   color: #94a3b8;
-  margin-bottom: 15px;
 }
 
-/* GRID */
 .container {
-  max-width: 1100px;
+  max-width: 900px;
   margin: auto;
   padding: 20px;
-  display: grid;
-  gap: 15px;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 15px;
-}
-
-/* CARD */
 .card {
   background: #111827;
   padding: 15px;
-  border-radius: 14px;
-  border: 1px solid #1f2937;
-  transition: 0.2s;
-}
-
-.card:hover {
-  transform: scale(1.03);
-  border-color: #2563eb;
-}
-
-.title {
-  font-size: 16px;
-  font-weight: bold;
+  border-radius: 12px;
+  margin-top: 15px;
+  transition: 0.3s;
 }
 
 .tag {
   display: inline-block;
-  padding: 4px 8px;
+  padding: 5px 8px;
   border-radius: 6px;
   font-size: 12px;
   margin-top: 8px;
@@ -74,18 +51,6 @@ header {
 .yellow { background: #ca8a04; }
 .red { background: #dc2626; }
 
-.info {
-  margin-top: 10px;
-  font-size: 13px;
-  color: #cbd5e1;
-}
-
-/* VIP */
-.vip {
-  border: 1px solid #2563eb;
-  background: #0b1220;
-}
-
 button {
   width: 100%;
   margin-top: 10px;
@@ -94,7 +59,6 @@ button {
   border-radius: 10px;
   background: #2563eb;
   color: white;
-  font-weight: bold;
 }
 </style>
 
@@ -102,55 +66,53 @@ button {
 
 <body>
 
-<header>PRO TIPSTER DASHBOARD</header>
-<div class="sub">Sistema de análises e probabilidades esportivas</div>
+<header>PRO TIPSTER LIVE</header>
+<div class="sub">Jogos atualizando automaticamente (simulado)</div>
 
-<div class="container">
+<div class="container" id="games"></div>
 
-<!-- JOGOS -->
-<div class="grid">
+<script>
+// SIMULAÇÃO DE JOGOS DINÂMICOS
+const jogos = [
+  {t1:"Flamengo", t2:"Palmeiras", tip:"Over 1.5", risk:"green", conf:78},
+  {t1:"Corinthians", t2:"São Paulo", tip:"Ambas marcam", risk:"yellow", conf:65},
+  {t1:"Grêmio", t2:"Inter", tip:"Under 2.5", risk:"red", conf:52},
+  {t1:"Real Madrid", t2:"Barcelona", tip:"Over 2.5", risk:"green", conf:81}
+];
 
-<div class="card">
-<div class="title">Flamengo vs Palmeiras</div>
-<span class="tag green">Over 1.5 gols</span>
-<div class="info">
-Confiança: 78%<br>
-Risco: Médio
-</div>
-</div>
+function render() {
+  const container = document.getElementById("games");
+  container.innerHTML = "";
 
-<div class="card">
-<div class="title">Corinthians vs São Paulo</div>
-<span class="tag yellow">Ambas marcam</span>
-<div class="info">
-Confiança: 65%<br>
-Risco: Médio/Alto
-</div>
-</div>
+  jogos.forEach(j => {
+    container.innerHTML += `
+      <div class="card">
+        <h3>${j.t1} vs ${j.t2}</h3>
+        <span class="tag ${j.risk}">${j.tip}</span>
+        <p>Confiança: ${j.conf}%</p>
+        <button>Ver análise</button>
+      </div>
+    `;
+  });
+}
 
-<div class="card">
-<div class="title">Time A vs Time B</div>
-<span class="tag red">Entrada arriscada</span>
-<div class="info">
-Confiança: 52%<br>
-Risco: Alto
-</div>
-</div>
+render();
 
-</div>
+// atualiza “simulado” a cada 5s
+setInterval(() => {
+  jogos.push({
+    t1:"Time " + Math.floor(Math.random()*10),
+    t2:"Time " + Math.floor(Math.random()*10),
+    tip:"Over 1.5",
+    risk:"green",
+    conf:60 + Math.floor(Math.random()*30)
+  });
 
-<!-- VIP -->
-<div class="card vip">
-<h3>🔒 Área VIP Profissional</h3>
-<p>✔ Análises antecipadas</p>
-<p>✔ Gestão de banca</p>
-<p>✔ Sinais com alta probabilidade</p>
-<p>✔ Atualizações diárias</p>
+  jogos.shift(); // remove antigo
+  render();
+}, 5000);
 
-<button>QUERO SER VIP</button>
-</div>
-
-</div>
+</script>
 
 </body>
 </html>
