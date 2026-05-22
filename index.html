@@ -3,86 +3,92 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Futebol Virtual - Análises</title>
+<title>Futebol Virtual Pro</title>
 
 <style>
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: #0b1220;
+  font-family: Arial;
+  background: #0a0f1c;
   color: white;
 }
 
 header {
   background: #111827;
-  padding: 20px;
+  padding: 18px;
   text-align: center;
   font-size: 22px;
   font-weight: bold;
 }
 
+.sub {
+  text-align: center;
+  color: #94a3b8;
+  margin-top: 5px;
+}
+
 .container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 15px;
   padding: 20px;
 }
 
 .card {
   background: #1f2937;
-  padding: 15px;
   border-radius: 12px;
-  transition: 0.3s;
+  padding: 15px;
 }
 
-.card:hover {
-  transform: scale(1.03);
+.badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
 }
+
+.green { background: #16a34a; }
+.yellow { background: #ca8a04; }
+.red { background: #dc2626; }
 
 button {
   margin-top: 10px;
-  padding: 8px;
   width: 100%;
+  padding: 8px;
   border: none;
   border-radius: 8px;
   background: #2563eb;
   color: white;
-  cursor: pointer;
 }
-
-.green { color: #22c55e; font-weight: bold; }
-.yellow { color: #facc15; font-weight: bold; }
-.red { color: #ef4444; font-weight: bold; }
 </style>
 
 </head>
 
 <body>
 
-<header>
-Futebol Virtual - Painel de Análises
-</header>
+<header>Futebol Virtual Pro</header>
+<div class="sub">Painel de análises automáticas</div>
 
 <div class="container">
 
 <div class="card">
 <h3>Time A vs Time B</h3>
-<p>Entrada: <span class="green">Over 1.5 gols</span></p>
-<p>Risco: <span class="yellow">Médio</span></p>
+<span class="badge green">Over 1.5</span>
+<p>Entrada recomendada com alta probabilidade de gols.</p>
 <button>Ver análise</button>
 </div>
 
 <div class="card">
 <h3>Time C vs Time D</h3>
-<p>Entrada: <span class="green">Ambas marcam</span></p>
-<p>Risco: <span class="red">Alto</span></p>
+<span class="badge yellow">Ambas marcam</span>
+<p>Jogo equilibrado com tendência ofensiva.</p>
 <button>Ver análise</button>
 </div>
 
 <div class="card">
 <h3>Time E vs Time F</h3>
-<p>Entrada: <span class="green">Vitória Time E</span></p>
-<p>Risco: <span class="yellow">Médio</span></p>
+<span class="badge red">Vitória simples</span>
+<p>Entrada mais arriscada com odds maiores.</p>
 <button>Ver análise</button>
 </div>
 
