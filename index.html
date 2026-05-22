@@ -8,32 +8,53 @@
 <style>
 body {
   margin: 0;
-  font-family: Arial;
+  font-family: Arial, sans-serif;
   background: #0b1220;
   color: white;
-  text-align: center;
 }
 
 header {
   background: #111827;
   padding: 20px;
+  text-align: center;
   font-size: 22px;
   font-weight: bold;
 }
 
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+  padding: 20px;
+}
+
 .card {
   background: #1f2937;
-  margin: 15px auto;
   padding: 15px;
-  max-width: 500px;
-  border-radius: 10px;
-  text-align: left;
+  border-radius: 12px;
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: scale(1.03);
+}
+
+button {
+  margin-top: 10px;
+  padding: 8px;
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+  background: #2563eb;
+  color: white;
+  cursor: pointer;
 }
 
 .green { color: #22c55e; font-weight: bold; }
 .yellow { color: #facc15; font-weight: bold; }
 .red { color: #ef4444; font-weight: bold; }
 </style>
+
 </head>
 
 <body>
@@ -42,25 +63,29 @@ header {
 Futebol Virtual - Painel de Análises
 </header>
 
+<div class="container">
+
 <div class="card">
-<h3>Jogo 1</h3>
-<p>Time A vs Time B</p>
-<p>Probabilidade: <span class="green">Over 1.5 gols</span></p>
+<h3>Time A vs Time B</h3>
+<p>Entrada: <span class="green">Over 1.5 gols</span></p>
 <p>Risco: <span class="yellow">Médio</span></p>
+<button>Ver análise</button>
 </div>
 
 <div class="card">
-<h3>Jogo 2</h3>
-<p>Time C vs Time D</p>
-<p>Probabilidade: <span class="green">Ambas marcam</span></p>
+<h3>Time C vs Time D</h3>
+<p>Entrada: <span class="green">Ambas marcam</span></p>
 <p>Risco: <span class="red">Alto</span></p>
+<button>Ver análise</button>
 </div>
 
 <div class="card">
-<h3>Jogo 3</h3>
-<p>Time E vs Time F</p>
-<p>Probabilidade: <span class="green">Vitória Time E</span></p>
+<h3>Time E vs Time F</h3>
+<p>Entrada: <span class="green">Vitória Time E</span></p>
 <p>Risco: <span class="yellow">Médio</span></p>
+<button>Ver análise</button>
+</div>
+
 </div>
 
 </body>
