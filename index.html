@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -43,72 +44,58 @@ header {
   padding: 5px 8px;
   border-radius: 6px;
   font-size: 12px;
-}
-
-.green { background: #16a34a; }
-.yellow { background: #ca8a04; }
-
-button {
-  width: 100%;
-  margin-top: 10px;
-  padding: 10px;
-  border: none;
-  border-radius: 10px;
   background: #2563eb;
-  color: white;
 }
 </style>
-
 </head>
 
 <body>
 
 <header>PRO TIPSTER LIVE</header>
-<div class="sub">Jogos reais + análises automáticas</div>
+<div class="sub">Jogos reais ao vivo via API</div>
 
-<div class="container" id="games"></div>
+<div class="container" id="games">Carregando jogos...</div>
 
 <script>
 
-// 🔥 DADOS SIMULADOS (DEPOIS TROCAMOS POR API REAL)
-const jogos = [
-  {
-    home: "Flamengo",
-    away: "Palmeiras",
-    tip: "Over 1.5 gols",
-    conf: 78
-  },
-  {
-    home: "Corinthians",
-    away: "São Paulo",
-    tip: "Ambas marcam",
-    conf: 65
-  },
-  {
-    home: "Real Madrid",
-    away: "Barcelona",
-    tip: "Over 2.5 gols",
-    conf: 82
+const API_KEY = "COLOQUE_SUA_CHAVE_AQUI";
+
+async function loadGames() {
+  try {
+    const res = await fetch("https://v3.football.api-sports.io/fixtures?live=all", {
+      headers: {
+        "x-apisports-key": API_KEY
+      }
+    });
+
+    const data = await res.json();
+
+    const container = document.getElementById("games");
+    container.innerHTML = "";
+
+    if (!data.response.length) {
+      container.innerHTML = "<p>Nenhum jogo ao vivo no momento.</p>";
+      return;
+    }
+
+    data.response.forEach(game => {
+      container.innerHTML += `
+        <div class="card">
+          <h3>${game.teams.home.name} vs ${game.teams.away.name}</h3>
+          <p>Placar: ${game.goals.home} - ${game.goals.away}</p>
+          <span class="badge">AO VIVO</span>
+        </div>
+      `;
+    });
+
+  } catch (err) {
+    document.getElementById("games").innerHTML =
+      "<p>Erro ao carregar jogos.</p>";
   }
-];
-
-function render() {
-  const container = document.getElementById("games");
-  container.innerHTML = "";
-
-  jogos.forEach(j => {
-    container.innerHTML += `
-      <div class="card">
-        <h3>${j.home} vs ${j.away}</h3>
-        <span class="badge green">${j.tip}</span>
-        <p>Confiança: ${j.conf}%</p>
-        <button>Ver análise</button>
-      </div>
-    `;
-  });
 }
 
-render();
+loadGames();
+setInterval(loadGames, 30000);
 
 </script>
 
