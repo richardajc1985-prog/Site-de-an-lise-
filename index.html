@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -52,7 +51,7 @@ header {
 <body>
 
 <header>PRO TIPSTER LIVE</header>
-<div class="sub">Jogos reais ao vivo via API</div>
+<div class="sub">Jogos do dia (atualização automática)</div>
 
 <div class="container" id="games">Carregando jogos...</div>
 
@@ -62,11 +61,17 @@ const API_KEY = "AIzaSyBXqIFIPxbfpz6r80Xwke8stgGug0lZ9Gk";
 
 async function loadGames() {
   try {
-    const res = await fetch("https://v3.football.api-sports.io/fixtures?live=all", {
-      headers: {
-        "x-apisports-key": API_KEY
+    // 🔥 AGORA PEGANDO JOGOS DO DIA
+    const date = new Date().toISOString().split("T")[0];
+
+    const res = await fetch(
+      `https://v3.football.api-sports.io/fixtures?date=${date}`,
+      {
+        headers: {
+          "x-apisports-key": API_KEY
+        }
       }
-    });
+    );
 
     const data = await res.json();
 
@@ -74,7 +79,7 @@ async function loadGames() {
     container.innerHTML = "";
 
     if (!data.response.length) {
-      container.innerHTML = "<p>Nenhum jogo ao vivo no momento.</p>";
+      container.innerHTML = "<p>Nenhum jogo hoje.</p>";
       return;
     }
 
@@ -82,8 +87,9 @@ async function loadGames() {
       container.innerHTML += `
         <div class="card">
           <h3>${game.teams.home.name} vs ${game.teams.away.name}</h3>
-          <p>Placar: ${game.goals.home} - ${game.goals.away}</p>
-          <span class="badge">AO VIVO</span>
+          <p>${game.league.name}</p>
+          <p>Status: ${game.fixture.status.long}</p>
+          <span class="badge">JOGO DO DIA</span>
         </div>
       `;
     });
@@ -95,7 +101,7 @@ async function loadGames() {
 }
 
 loadGames();
-setInterval(loadGames, 30000);
+setInterval(loadGames, 60000);
 
 </script>
 
