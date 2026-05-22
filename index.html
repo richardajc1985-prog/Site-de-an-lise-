@@ -1,109 +1,54 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-<meta charset="UTF-8">
-<title>Pro Tipster Live</title>
-
-<style>
-body {
-  margin: 0;
-  font-family: Arial;
-  background: #050814;
-  color: white;
-}
-
-header {
-  background: #0f172a;
-  padding: 20px;
-  text-align: center;
-  font-size: 22px;
-  font-weight: bold;
-}
-
-.sub {
-  text-align: center;
-  color: #94a3b8;
-}
-
-.container {
-  max-width: 900px;
-  margin: auto;
-  padding: 20px;
-}
-
-.card {
-  background: #111827;
-  padding: 15px;
-  border-radius: 12px;
-  margin-top: 15px;
-}
-
-.badge {
-  display: inline-block;
-  padding: 5px 8px;
-  border-radius: 6px;
-  font-size: 12px;
-  background: #2563eb;
-}
-</style>
-</head>
-
-<body>
-
-<header>PRO TIPSTER LIVE</header>
-<div class="sub">Jogos do dia (atualização automática)</div>
-
-<div class="container" id="games">Carregando jogos...</div>
-
-<script>
-
 const API_KEY = "AIzaSyBXqIFIPxbfpz6r80Xwke8stgGug0lZ9Gk";
 
 async function loadGames() {
+  const container = document.getElementById("games");
+  container.innerHTML = "Carregando jogos...";
+
   try {
-    // 🔥 AGORA PEGANDO JOGOS DO DIA
-    const date = new Date().toISOString().split("T")[0];
+    let date = new Date();
 
-    const res = await fetch(
-      `https://v3.football.api-sports.io/fixtures?date=${date}`,
-      {
-        headers: {
-          "x-apisports-key": API_KEY
+    // tenta hoje + próximos 3 dias
+    for (let i = 0; i < 3; i++) {
+      let d = new Date(date);
+      d.setDate(date.getDate() + i);
+
+      let formatted = d.toISOString().split("T")[0];
+
+      const res = await fetch(
+        `https://v3.football.api-sports.io/fixtures?date=${formatted}`,
+        {
+          headers: {
+            "x-apisports-key": API_KEY
+          }
         }
+      );
+
+      const data = await res.json();
+
+      if (data.response.length > 0) {
+        container.innerHTML = "";
+
+        data.response.forEach(game => {
+          container.innerHTML += `
+            <div class="card">
+              <h3>${game.teams.home.name} vs ${game.teams.away.name}</h3>
+              <p>${game.league.name}</p>
+              <p>Status: ${game.fixture.status.long}</p>
+              <span class="badge">JOGO</span>
+            </div>
+          `;
+        });
+
+        return; // para no primeiro dia com jogos
       }
-    );
-
-    const data = await res.json();
-
-    const container = document.getElementById("games");
-    container.innerHTML = "";
-
-    if (!data.response.length) {
-      container.innerHTML = "<p>Nenhum jogo hoje.</p>";
-      return;
     }
 
-    data.response.forEach(game => {
-      container.innerHTML += `
-        <div class="card">
-          <h3>${game.teams.home.name} vs ${game.teams.away.name}</h3>
-          <p>${game.league.name}</p>
-          <p>Status: ${game.fixture.status.long}</p>
-          <span class="badge">JOGO DO DIA</span>
-        </div>
-      `;
-    });
+    container.innerHTML = "<p>Nenhum jogo encontrado nos próximos dias.</p>";
 
   } catch (err) {
-    document.getElementById("games").innerHTML =
-      "<p>Erro ao carregar jogos.</p>";
+    container.innerHTML = "<p>Erro ao carregar jogos.</p>";
   }
 }
 
 loadGames();
 setInterval(loadGames, 60000);
-
-</script>
-
-</body>
-</html>
